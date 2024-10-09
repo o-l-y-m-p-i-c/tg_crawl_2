@@ -2,7 +2,7 @@ import Graph from "react-graph-vis";
 import { useState, useEffect, useRef, useMemo } from "react";
 import io from "socket.io-client";
 import React from "react";
-import { HypchartOptions } from "../../constants";
+import { HypchartOptions, HypeChartEndpoint } from "../../constants";
 
 const unactive = 0.2,
   active = 1;
@@ -44,10 +44,7 @@ const HypeChart = ({ openModal, searchInput }) => {
 
   const networkRef = useRef(null);
 
-  const socket = io.connect("https://hypechart.privateai.com");
-  // const socket = io.connect(
-  //   "http://" + document.domain + ":" + 5000 + "/graph"
-  // );
+  const socket = io.connect(HypeChartEndpoint);
 
   const createNode = (data) => {
     const color = randomColor();

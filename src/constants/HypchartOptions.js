@@ -45,4 +45,7 @@ const HypchartOptions = {
   },
 };
 
-export { HypchartOptions };
+const HypeChartEndpoint = "http://" + document.domain + ":" + 5000 + "/graph";
+// "https://hypechart.privateai.com";
+
+export { HypchartOptions, HypeChartEndpoint };
