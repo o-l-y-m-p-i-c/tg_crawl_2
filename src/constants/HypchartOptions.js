@@ -26,17 +26,17 @@ const HypchartOptions = {
   physics: {
     enabled: true,
     barnesHut: {
-      gravitationalConstant: -500,
+      gravitationalConstant: -1000,
       centralGravity: 0,
-      springLength: 175,
-      springConstant: 0.0021,
+      springLength: 350,
+      springConstant: 0.001,
     },
     repulsion: {
-      nodeDistance: 200,
+      nodeDistance: 250,
     },
     stabilization: {
-      enabled: true,
-      iterations: 10,
+      // enabled: true,
+      // iterations: 10,
     },
   },
   interaction: {
@@ -45,7 +45,15 @@ const HypchartOptions = {
   },
 };
 
-const HypeChartEndpoint = "https://hypechart.privateai.com";
+const isProd = false;
+
+const HypeChartEndpoint = isProd
+  ? "https://hypechart.privateai.com/graph"
+  : "http://" + document.domain + ":" + 5000 + "/graph";
+
+// for deploy
+// "https://hypechart.privateai.com/graph";
+// for dev
 // "http://" + document.domain + ":" + 5000 + "/graph";
 
 export { HypchartOptions, HypeChartEndpoint };
