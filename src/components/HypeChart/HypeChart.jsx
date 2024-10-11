@@ -2,7 +2,11 @@ import Graph from "react-graph-vis";
 import { useState, useEffect, useRef, useMemo } from "react";
 import io from "socket.io-client";
 import React from "react";
-import { HypchartOptions, HypeChartEndpoint } from "../../constants";
+import {
+  HypchartOptions,
+  HypeChartEndpoint,
+  MaxNodeCount,
+} from "../../constants";
 
 const unactive = 0.2,
   active = 1;
@@ -58,7 +62,7 @@ const HypeChart = ({ openModal, searchInput }) => {
               node.shape = "circularImage";
             }
 
-            if (networkRef.current.body.data.nodes.length < 100) {
+            if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
               if (input.current) {
                 if (node.msg) {
                   const includes = node.msg
@@ -83,7 +87,7 @@ const HypeChart = ({ openModal, searchInput }) => {
       if (data?.edges) {
         data.edges.forEach((edge) => {
           try {
-            if (networkRef.current.body.data.nodes.length < 500) {
+            if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
               networkRef.current.body.data.edges.add(edge);
             }
           } catch (e) {}

@@ -16,8 +16,9 @@ const HypeModal = () => {
         <a
           className="button open-button"
           target={"blank"}
-          href={`https://t.me/@${modalData.telegram_username}`}
+          href={`https://t.me/${modalData.telegram_username}`}
         >
+          {console.log(modalData)}
           Open channel
         </a>
       )}
