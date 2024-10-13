@@ -5,7 +5,7 @@ const HypchartOptions = {
   },
   nodes: {
     shape: "dot",
-    size: 20,
+    size: 30,
     font: {
       size: 10,
       vadjust: 0,
@@ -45,7 +45,7 @@ const HypchartOptions = {
   },
 };
 
-const isProd = true;
+const isProd = false;
 
 const MaxNodeCount = 100;
 

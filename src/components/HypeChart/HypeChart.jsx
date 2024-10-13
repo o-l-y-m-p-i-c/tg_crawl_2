@@ -3,8 +3,10 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import io from "socket.io-client";
 import React from "react";
 import {
+  EdgesData,
   HypchartOptions,
   HypeChartEndpoint,
+  InitData,
   MaxNodeCount,
 } from "../../constants";
 
@@ -27,12 +29,13 @@ function randomColor() {
 const HypeChart = ({ openModal, searchInput }) => {
   const input = useRef(searchInput);
 
-  const graphData = useRef([]);
+  const graphData = useRef([...InitData]);
+  const edgesData = useRef([...EdgesData]);
 
   const [state] = useState({
     graph: {
-      nodes: [],
-      edges: [],
+      nodes: [...InitData],
+      edges: [...EdgesData],
     },
     events: {
       select: ({ nodes }) => {
@@ -40,7 +43,8 @@ const HypeChart = ({ openModal, searchInput }) => {
           const foundNode = graphData.current.find(
             (graphNode) => graphNode.id === nodes[0]
           );
-          if (foundNode && openModal) openModal(foundNode);
+          if (foundNode && foundNode?.telegram_username && openModal)
+            openModal(foundNode);
         }
       },
     },
@@ -57,7 +61,9 @@ const HypeChart = ({ openModal, searchInput }) => {
       if (data?.nodes) {
         data.nodes.forEach((node) => {
           try {
-            node.size = node.size / 1.5;
+            node.size = 20;
+            //  node.size / 1.5 < 20 ? 20 : node.size / 1.5;
+            //  node.size / 1.5;
             if (node?.image) {
               node.shape = "circularImage";
             }
@@ -65,14 +71,14 @@ const HypeChart = ({ openModal, searchInput }) => {
             if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
               if (input.current) {
                 if (node.msg) {
-                  const includes = node.msg
+                  const includesInMessage = node.msg
                     .toLowerCase()
                     .includes(input.current.toString().toLowerCase());
-                  if (includes) {
-                    node.opacity = active;
-                  } else {
-                    node.opacity = unactive;
-                  }
+                  const includesInTitle = node.label
+                    .toLowerCase()
+                    .includes(input.current.toString().toLowerCase());
+                  node.opacity =
+                    includesInMessage || includesInTitle ? active : unactive;
                 } else {
                   node.opacity = unactive;
                 }
@@ -87,8 +93,22 @@ const HypeChart = ({ openModal, searchInput }) => {
       if (data?.edges) {
         data.edges.forEach((edge) => {
           try {
-            if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
-              networkRef.current.body.data.edges.add(edge);
+            const fromNode = graphData.current.find(
+              (node) => node.id === edge.from
+            );
+            const toNode = graphData.current.find(
+              (node) => node.id === edge.to
+            );
+
+            if (fromNode && toNode) {
+              if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
+                networkRef.current.body.data.edges.add(edge);
+                edgesData.current.push(edge);
+              }
+            } else {
+              console.warn(
+                `Edge skipped: Missing node for edge from ${edge.from} to ${edge.to}`
+              );
             }
           } catch (e) {}
         });
@@ -189,6 +209,17 @@ const HypeChart = ({ openModal, searchInput }) => {
 
   return (
     <>
+      {/* <div
+        className=""
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
+        {JSON.stringify(graphData.current)}
+      </div> */}
       <Graph
         graph={graph}
         options={HypchartOptions}
