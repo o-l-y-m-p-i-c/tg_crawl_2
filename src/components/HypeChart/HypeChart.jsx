@@ -38,7 +38,7 @@ const HypeChart = ({ openModal, searchInput }) => {
       edges: [...EdgesData],
     },
     events: {
-      select: ({ nodes }) => {
+      click: ({ nodes }) => {
         if (nodes) {
           const foundNode = graphData.current.find(
             (graphNode) => graphNode.id === nodes[0]
@@ -66,6 +66,11 @@ const HypeChart = ({ openModal, searchInput }) => {
             //  node.size / 1.5;
             if (node?.image) {
               node.shape = "circularImage";
+            }
+
+            if (networkRef.current.body.data.nodes.length >= MaxNodeCount) {
+              socket.disconnect();
+              console.log("socket disconnect");
             }
 
             if (networkRef.current.body.data.nodes.length < MaxNodeCount) {
@@ -106,9 +111,6 @@ const HypeChart = ({ openModal, searchInput }) => {
                 edgesData.current.push(edge);
               }
             } else {
-              console.warn(
-                `Edge skipped: Missing node for edge from ${edge.from} to ${edge.to}`
-              );
             }
           } catch (e) {}
         });
