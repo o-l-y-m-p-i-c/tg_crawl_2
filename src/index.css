@@ -61,12 +61,19 @@ code {
 }
 
 .open-button {
+  display: inline-block;
   background-color: white;
   border-color: white;
   color: rgb(43, 32, 72);
+  flex: 0;
+  text-align: center;
+  /* margin-left: auto; */
 }
 
 .close-button {
+  display: inline-block;
+  padding: 20px;
+  flex: 0;
 }
 
 html,
@@ -123,4 +130,21 @@ body canvas {
   position: absolute;
   right: 20px;
   bottom: 20px;
+}
+
+.ReactModal__Content.ReactModal__Content--after-open {
+  width: 500px;
+  max-width: 95%;
+  container-name: sidebar;
+  container-type: inline-size;
+}
+
+@container (width < 350px) {
+  .flexContainer {
+    flex-direction: column;
+  }
+
+  .flexContainer img {
+    max-width: 100px !important;
+  }
 }

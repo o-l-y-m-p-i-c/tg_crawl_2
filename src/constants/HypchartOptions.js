@@ -45,9 +45,9 @@ const HypchartOptions = {
   },
 };
 
-const isProd = false;
+const isProd = true;
 
-const MaxNodeCount = 100;
+const MaxNodeCount = 3000;
 
 const HypeChartEndpoint = isProd
   ? "https://hypechart.privateai.com/graph"

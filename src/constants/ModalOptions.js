@@ -8,8 +8,9 @@ const ModalOptions = {
     boxShadow: "0 0px 5px rgba(255, 255, 255, 0.457)",
     borderRadius: 10,
     border: "1px solid white",
-    // marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    overflow: "hidden",
+    padding: 0,
   },
   overlay: {
     zIndex: 2,
